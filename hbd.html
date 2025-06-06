@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8" />
+  <meta
+    content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5"
+    name="viewport"
+  />
+  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat&display=swap"
+    rel="stylesheet"
+  />
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+  <script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.154.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.154.0/examples/jsm/",
+        "three-mesh-bvh": "https://unpkg.com/three-mesh-bvh@0.6.0/build/index.module.js",
+        "three-bvh-csg": "https://unpkg.com/three-bvh-csg@0.0.7/build/index.module.js"
+      }
+    }
+  </script>
+  <head>
+    <title>Happy Birthday</title>
+    <meta name="description" content="Happy Birthday | MultiAI" />
+  </head>
+  <style>
+    :root {
+      --warna-bg: rgba(0, 0, 0, 0.3);
+      --tombol-teks: #fff;
+      --tombol-bingkai: #fff;
+      --bingkai: 18px;
+      --bingkai-kiri: 1.3px solid var(--tombol-bingkai);
+      --bingkai-kanan: 1.3px solid var(--tombol-bingkai);
+      --gaya-font: "Nunito Sans", sans-serif;
+      --gaya-font2: "Caveat", cursive;
+    }
+    @keyframes fanim {
+      0% {
+        background-position: 0% 0%;
+      }
+      25% {
+        background-position: 100% 100%;
+      }
+      50% {
+        background-position: 0% 100%;
+      }
+      75% {
+        background-position: 50% 50%;
+      }
+      100% {
+        background-position: 0% 0%;
+      }
+    }
+    body {
+      background-color: #000;
+      font-family: var(--gaya-font);
+      padding: 20px 25px;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    a {
+      text-decoration: none;
+    }
+
+    #bodyblur {
+      animation: jj 7s infinite;
+      opacity: 0.5;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      transition: all 1s ease;
+    }
+    #wallpaper {
+      width: 100%;
+      height: 100%;
+      transform: scale(1);
+      transition: all 1.7s ease;
+    }
+    #beneranblur {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      transition: all 3s ease;
+    }
+
+    @keyframes jj {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.3);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    @keyframes rts {
+      from {
+        transform: scale(0.1);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+    @keyframes rto {
+      from {
+        transform: scale(1);
+      }
+      to {
+        transform: scale(1.1);
+      }
+    }
+    @keyframes aniopa {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(0.75);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    @keyframes rtf {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes rt {
+      from {
+        transform: scale(0.9); /* transform: rotate(-5deg); */
+      }
+      to {
+        transform: scale(1); /* transform: rotate(5deg); */
+      }
+    }
+    @keyframes kont {
+      0% {
+        left: -1px;
+        top: -3px;
+      }
+      50% {
+        left: 1px;
+        top: 3px;
+      }
+      100% {
+        left: -1px;
+        top: -3px;
+      }
+    }
+
+    blockquote {
+      position: absolute;
+      opacity: 0;
+      visibility: hidden; /*background:var(--warna-bg);border: 1px solid rgba(255, 255, 255, 0.5);border-radius:var(--bingkai);box-shadow: rgba(255,255,255, 0.3) 0px 7px 29px 0px;*/
+      transform: scale(0.1);
+      transition: all 0.7s ease;
+      margin-left: 0;
+      margin-right: 0;
+      color: var(--tombol-teks);
+      text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.8); /*backdrop-filter:blur(2px);*/
+    }
+    blockquote {
+      width: 400px;
+      text-align: center;
+      line-height: 1.3em;
+      padding: 0;
+    }
+    blockquote p {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.5em;
+      transition: all 0.5s ease;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    blockquote p:not(#kalimat, #judulAkhir) {
+      display: none;
+    }
+    #judulAkhir,
+    blockquote p span.ft {
+      font-family: var(--gaya-font2);
+      font-size: 20px;
+      font-weight: 700;
+    }
+    #judulAkhir {
+      font-size: 22px;
+      position: absolute;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.8s ease;
+    }
+
+    #slider {
+      margin-top: 40px;
+      position: absolute;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 1s ease;
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      justify-content: flex-start;
+      max-width: 500px;
+      overflow-y: hidden;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      -ms-overflow-style: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    #slider div {
+      background: rgba(255, 255, 255, 0.147);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-wrap: nowrap;
+      text-align: center;
+      line-height: 1.4em;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 99%;
+      margin: 0 15px 0 0;
+      padding: 15px 0;
+      scroll-snap-align: center;
+    }
+    #slider div,
+    #psn {
+      color: white;
+      text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.8);
+      min-height: 150px;
+    }
+    #slider > *:last-child {
+      margin-right: 0;
+    }
+    #slider:after {
+      content: "";
+      display: block;
+      flex-shrink: 0;
+      align-self: stretch;
+      padding-left: 20px;
+    }
+    #slider div {
+      display: block;
+    }
+    #slider div b {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    #slider div b.ft {
+      font-family: var(--gaya-font2);
+      font-size: 20px;
+    }
+    #slider div img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+    }
+    #fotolove {
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    #fotolove:hover {
+      transform: scale(0.8);
+    }
+    #pesanAkhir {
+      margin-top: 30px;
+      font-family: var(--gaya-font3);
+      font-size: 22px !important;
+      font-weight: 400;
+      text-align: center;
+      position: absolute;
+      opacity: 0;
+    }
+
+    #button {
+      position: relative;
+      opacity: 0;
+      display: flex;
+      align-items: left;
+      list-style: none;
+      transform: scale(0.1);
+      transition: all 0.7s ease;
+    }
+    #button a {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      margin: 0;
+      margin: 12px 0 12px 0;
+      transition: all 0.2s ease;
+      padding: 10px;
+      outline: 0;
+      border-radius: 8px;
+      line-height: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      font-size: 12px;
+      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      z-index: 1;
+    }
+    #button a:hover {
+      transform: scale(0.9);
+      opacity: 0.98;
+    }
+
+    #content {
+      animation-name: none;
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+      position: relative;
+      opacity: 0;
+      margin-top: 50px;
+      width: 100%;
+      height: 180px;
+      transition: all 0.7s ease;
+    }
+    #content > * {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .stickerswrapper > img {
+      display: none;
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 30px rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 1);
+      border-radius: 50%;
+      padding: 10px;
+      width: 92px;
+      height: 92px;
+    }
+    #fotostiker {
+      opacity: 0.1;
+      transition: all 0.7s ease;
+      transform: scale(0.1);
+    }
+    #imglewat {
+      margin: 30px 0;
+      opacity: 0;
+      max-width: 520px;
+      height: 100px;
+      position: absolute;
+      transition: all 1s ease;
+    }
+
+    #fotolove img {
+      transition: all 0.5s ease;
+      width: 75px;
+      height: 75px;
+      padding: 0;
+      background: none;
+    }
+    #ket {
+      color: white;
+      margin-top: 20px !important;
+      font-size: 12px;
+      font-weight: 400;
+      opacity: 0.8;
+    }
+
+    @keyframes leaves {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(0.85);
+      }
+    }
+    .lovein {
+      background: #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      padding: 10px;
+      font-size: 30px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    .lovein:hover {
+      cursor: pointer;
+    }
+    .lovein svg {
+      stroke: #ff0000;
+      stroke-width: 1.3;
+      fill: none;
+      width: 35px;
+      height: 35px;
+    }
+
+    .swal2-modal > * {
+      font-family: var(--gaya-font);
+      font-size: 16px;
+      color: white;
+    }
+    .swal2-title {
+      line-height: 1.3em;
+      font-size: 17px;
+      text-align: center;
+      padding: 15px 30px 0 30px;
+    }
+    .swal2-timer-progress-bar-container > * {
+      opacity: 0.7;
+      background: #00b6ff;
+      margin: 0 2px;
+    }
+    .swal2-modal {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      box-shadow: 0 4px 30px rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 14px;
+      max-width: 280px;
+      top: -60px;
+    }
+    .swal2-image {
+      background: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 30px rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      padding: 10px;
+    }
+    .swal2-styled.swal2-confirm,
+    .swal2-styled.swal2-cancel {
+      position: relative;
+      background-color: #4839eb;
+      color: #fff;
+      font-size: 14px;
+      border: 1px solid #ffffff59;
+      border-radius: 4px;
+      z-index: 1;
+      transition: all 0.2s;
+    }
+
+    .fa-heart {
+      opacity: 0.3;
+      color: white;
+      font-size: 20px;
+      position: absolute;
+      animation: heartMove linear 1;
+      top: -10vh;
+      z-index: 0;
+    }
+    @keyframes heartMove {
+      0% {
+        transform: translateY(-10vh);
+      }
+      100% {
+        transform: translateY(100vh);
+      }
+    }
+    .sembunyi,
+    #pesanditolak > *,
+    #kado2,
+    #kado3,
+    .kumpulanwp > * {
+      display: none !important;
+    }
+    #bgKado {
+      position: absolute;
+      z-index: 20;
+      width: 99%;
+      height: 99%;
+      top: 50%;
+      left: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: translate(-50%, -50%);
+      background: argba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    #kadoIn {
+      cursor: pointer;
+      width: 200px;
+      height: 200px;
+    }
+    #kolombaru {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      list-style: none;
+    }
+  </style>
+  <body>
+    <!-- Ganti Audio di sini -->
+    <audio
+      src="https://irfan-za.github.io/bcn-assets/audio/yungkai.mp3"
+      id="linkmp3"
+      class="sembunyi"
+    ></audio>
+    <div id="bgKado">
+      <div id="kadoIn">
+        <img
+          src="https://irfan-za.github.io/bcn-assets/image/kado.png"
+          id="walalpaper"
+        />
+      </div>
+    </div>
+    <div id="bodyblur">
+      <img
+        src="https://irfan-za.github.io/bcn-assets/image/street-moon.jpg"
+        id="wallpaper"
+      />;
+
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div id="content">
+      <div class="stickerswrapper"> 
+       <!-- Stiker untuk Konten  -->
+         <img
+        src="kue ulangtahun.gif"
+          id="fotostiker"
+        />
+      </div>
+      <div>
+        <div id="slider">
+          <!-- Pesan -->
+          <div id="slide1">
+            <img
+              src="https://irfan-za.github.io/bcn-assets/image/hello.gif"
+            /><br />
+            <b>Hai Kaaaak, aku ada sesuatu nih buat kamuu </b>
+          </div>
+          <div id="slide2">
+            <img
+              src="https://irfan-za.github.io/bcn-assets/image/no.gif"
+            /><br />
+            <b id="tunggu"></b>
+          </div>
+          <div id="slide3">
+            <img
+              src="berpikir.gif"
+            /><br />
+            <b>Tau gak hari ini<br />Hari apaa?? 🤔</b>
+          </div>
+          <div id="slide4">
+            <br />
+            <b id="ultah"></b>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Pesan Akhir di Sini -->
+      <div>
+        <blockquote id="bq">
+          <p id="judulAkhir">HAPPY BIRTHDAY!!</p>
+          <p id="kalimat">
+            <span id="klganti">Happy Birthday yaa kaak<br /><br /></span>
+            Di hari yang spesial ini,<br />aku cuma mau bilang ke kamu 
+            semoga hari hari kamu penuh kebahagiaan dan menyenangkan selalu
+            yaaaa!!!<br />
+       <br />
+            Semoga semuanya berjalan sesuai harapan kamu yaa 🌟<br /><br />
+            <span class="ft"></span>
+          </p>
+        </blockquote>
+      </div>
+
+      <div id="button">
+        <a onClick="multifungsi()">
+          <b id="tmbl">Lanjut &#128073;</b>
+        </a>
+      </div>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+      canvas.style.display = "none";
+      const body = document.querySelector("body");
+      const iniwp = [];
+      iden = 1;
+      const swals = Swal.mixin({
+        timer: 99999,
+        allowOutsideClick: false,
+        showConfirmButton: true,
+        timerProgressBar: false,
+        imageHeight: 90,
+      });
+      audio = new Audio("" + linkmp3.src);
+      ftganti = 0;
+      fungsi = 0;
+      fungsiAwal = 0;
+      deffotostiker = fotostiker.src;
+      function berjatuhan() {
+        const heart = document.createElement("div");
+        heart.className = "fas fa-heart";
+        heart.style.left = Math.random() * 90 + "vw";
+        heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+        body.appendChild(heart);
+      }
+      setInterval(function name(params) {
+        var heartArr = document.querySelectorAll(".fa-heart");
+        if (heartArr.length > 100) {
+          heartArr[0].remove();
+        }
+      }, 100);
+      content.style = "opacity:1;margin-top:14vh";
+
+      const box = document.getElementById("slider");
+      const totalSlide = box.children.length;
+
+      //////////////////////////////////////////////////
+
+      var sudahklik = false;
+      sudahklik = true;
+
+      function initengahan() {
+        content.style = "opacity:1;margin-top:10vh";
+        setTimeout(inipesan, 200);
+        audio.play();
+      }
+
+      isSliderRunning = false;
+      currentSlide = 1;
+      document.getElementById("bodyblur").onclick = function () {
+        multifungsi();
+      };
+
+      function multifungsi() {
+        if (isSliderRunning) {
+          if (currentSlide == totalSlide) {
+            document.getElementById("wallpaper").style.display = "none";
+            document.getElementById("bodyblur").style.backgroundColor = "pink";
+            canvas.style.display = "inline";
+            aksiakhir();
+          }
+          document.getElementById("slider").scrollLeft += 300;
+          hsementara();
+        }
+        if (currentSlide == 100) {
+          button.style = "";
+          <!-- setTimeout(aksibalas, 150); -->
+        }
+      }
+
+      async function inipesan() {
+        nama = "Kamu";
+        window.nama = nama;
+        mulainama();
+      }
+
+      async function mulainama() {
+        setTimeout(pgmuncul, 200);
+        //ftmuncul();
+      }
+
+      function hsementara() {
+        button.style = "";
+        currentSlide += 1;
+        isSliderRunning = false;
+        setTimeout(munculkembali, 700);
+        if (currentSlide === 2) {
+          runPesan2();
+        }
+        if (currentSlide === 3) {
+          runPesan3();
+        }
+      }
+      let vketik2 = "Tunggu dulu...";
+      function runPesan2() {
+        new TypeIt("#tunggu", {
+          strings: ["" + vketik2],
+          startDelay: 20,
+          speed: 40,
+          cursor: true,
+          deleteSpeed: 50,
+          breakLines: false,
+          waitUntilVisible: true,
+          lifelike: true,
+          afterComplete: function () {
+            multifungsi();
+          },
+        }).go();
+      }
+      let vketik3 = "Ciee kak Karaa Ulang tahun Nih";
+      function runPesan3() {
+        new TypeIt("#ultah", {
+          strings: ["" + vketik3],
+          startDelay: 20,
+          speed: 40,
+          cursor: true,
+          deleteSpeed: 50,
+          breakLines: false,
+          waitUntilVisible: true,
+          lifelike: true,
+          afterComplete: function () {
+            multifungsi();
+          },
+        }).go();
+      }
+      function munculkembali() {
+        if (currentSlide <= totalSlide) {
+          button.style = "opacity:1;transform: scale(1)";
+          isSliderRunning = true;
+        }
+        if (currentSlide == 50) {
+          tmbl.innerHTML = "💌 Balas";
+          button.style = "opacity:1;transform: scale(1)";
+          currentSlide = 100;
+        }
+        //if(currentSlide==totalSlide){aksiakhir();currentSlide=50}
+      }
+
+      function aksiakhir() {
+        slider.style = "position:relative;";
+
+        button.style = "";
+        setTimeout(bqmuncul, 500);
+      }
+
+      function kalimatakhir() {
+        new TypeIt("#kalimat", {
+          strings: ["" + katakata],
+          startDelay: 50,
+          speed: 54,
+          cursor: true,
+          afterComplete: function () {
+            kalimat.innerHTML = katakata;
+            setTimeout(munculjudulAkhir, 300);
+            //tmbl.innerHTML = "💌 Balas";currentSlide=100;
+            //button.style="opacity:1;transform: scale(1)";
+          },
+        }).go();
+      }
+      function munculjudulAkhir() {
+        klganti.style = "display:none";
+        judulAkhir.style = "position:relative;opacity:1;transform:scale(1);";
+        setTimeout(jjjudulAkhir, 550);
+        setInterval(berjatuhan, 250);
+      }
+      function jjjudulAkhir() {
+        judulAkhir.style.animation = "rto .8s infinite alternate";
+      }
+
+      function ftmuncul() {
+        if (ftganti == 0) {
+          fotostiker.style = "display: none"
+        }
+        if (ftganti == 1) {
+          fotostiker.src = fotostiker1.src;
+        }
+        if (ftganti == 2) {
+          fotostiker.src = fotostiker2.src;
+        }
+        if (ftganti == 3) {
+          fotostiker.src = fotostiker3.src;
+        }
+        if (ftganti <= 10) {
+          fotostiker.style = "display:inline-flex;opacity:1;transform:scale(1)";
+        }
+      }
+      function fthilang() {
+        fotostiker.style = "display:inline-flex;opacity:0;transform:scale(0)";
+        if (ftganti < 10) {
+          setTimeout(ftmuncul, 250);
+        }
+      }
+      function jjfoto() {
+        fotostiker.style.animation = "rto .8s infinite alternate";
+      }
+
+      function pgmuncul() {
+        slider.style = "position:relative;opacity:1;transform:scale(1);";
+        setTimeout(munculkembali, 500);
+      }
+      function bqmuncul() {
+        katakata = kalimat.innerHTML;
+        kalimat.innerHTML = "";
+
+        content.style = "opacity:1;margin-top:8vh";
+        fotostiker.style = "display:none";
+        slider.style = "display:none";
+        button.style = "";
+        bq.style =
+          "position:relative;opacity:1;visibility:visible;margin-top:5vh;transform: scale(1);";
+        setTimeout(kalimatakhir, 200);
+        ftganti = 0;
+        fthilang();
+      }
+      function bqhilang() {
+        wallpaper.style = "transform: scale(2);";
+        bodyblur.style = "opacity:.3";
+        bq.style = "position:relative;transition:all .7s ease;";
+      }
+    </script>
+    <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls as e } from "three/addons/controls/OrbitControls.js";
+      import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
+      import {
+        SUBTRACTION as t,
+        Brush as n,
+        Evaluator as r,
+      } from "three-bvh-csg";
+
+      !(function () {
+        "use strict";
+        function a() {
+          ((E = new THREE.Scene()).environment = w),
+            (l = new THREE.WebGLRenderer({
+              canvas: canvas,
+              antialias: !0,
+              alpha: !0,
+            })).setPixelRatio(window.devicePixelRatio),
+            l.setSize(window.innerWidth, window.innerHeight),
+            (l.useLegacyLights = !1),
+            (s = new THREE.PerspectiveCamera(
+              35,
+              window.innerWidth / window.innerHeight,
+              0.1,
+              3 * H
+            )).position.set(0, 0, H * Math.sqrt(2)),
+            s.lookAt(0, 0, 0);
+          const a = new THREE.AmbientLight(16777215, 0.3);
+          E.add(a);
+          const u = new THREE.DirectionalLight(16777215, 1);
+          u.position.set(0, 2 * H, 0),
+            E.add(u),
+            (E.fog = new THREE.FogExp2(16101802, 0.005)),
+            (m = new THREE.MeshStandardMaterial({
+              metalness: 1,
+              roughness: 0,
+            })),
+            (p = []),
+            (c = c = new THREE.CapsuleGeometry(3, 6, 5, 20)).rotateZ(
+              -Math.PI / 3.78
+            ),
+            c.translate(0, -1, 0),
+            c.scale(1, 1, 0.85),
+            c.scale(0.24, 0.24, 0.24),
+            (c = (function (e) {
+              let a,
+                o,
+                i,
+                s,
+                E = e.clone(),
+                l = new THREE.MeshBasicMaterial({}),
+                d = 2 * c.parameters.radius,
+                m = 2 * c.parameters.height,
+                h = new THREE.BoxGeometry(d, m, d);
+              return (
+                h.translate(-d / 2, 0, 0),
+                (a = new r()),
+                (o = new n(E, l)),
+                (i = new n(h, l)),
+                (a.useGroups = !0),
+                (s = a.evaluate(o, i, t, s)).geometry
+              );
+            })(c)),
+            p.push(c),
+            (c = c.clone()).rotateY(Math.PI),
+            p.push(c),
+            (c = BufferGeometryUtils.mergeGeometries(p)),
+            (c = BufferGeometryUtils.mergeVertices(c)).computeVertexNormals();
+          const M = new THREE.Color(),
+            T = new THREE.Matrix4();
+          h = new THREE.InstancedMesh(c, m, R);
+          for (let e = 0; e < R; e++)
+            g(T),
+              h.setMatrixAt(e, T),
+              h.setColorAt(
+                e,
+                M.setHSL(
+                  Math.abs(THREE.MathUtils.randInt(9750, 1e4) / 1e4),
+                  1,
+                  THREE.MathUtils.randInt(450, 700) / 1e3
+                )
+              );
+          E.add(h);
+          (c = new THREE.SphereGeometry(0.3, 20, 10)),
+            (m = m.clone()).color.set("deeppink"),
+            (m.roughness = 0.3),
+            (h = new THREE.InstancedMesh(c, m, 220));
+          for (let e = 0; e < 220; e++) g(T), h.setMatrixAt(e, T);
+          E.add(h),
+            ((d = new e(s, l.domElement)).autoRotate = !0),
+            (d.enableDamping = !0),
+            (d.enablePan = !1),
+            (d.minDistance = 0.1),
+            (d.maxDistance = H * Math.sqrt(2)),
+            (d.minPolarAngle = 0),
+            (d.maxPolarAngle = Math.PI / 2),
+            d.target.set(0, 0, 0),
+            d.update(),
+            window.addEventListener("resize", o),
+            i();
+        }
+        function o() {
+          (s.aspect = window.innerWidth / window.innerHeight),
+            s.updateProjectionMatrix(),
+            l.setSize(window.innerWidth, window.innerHeight);
+        }
+        function i() {
+          requestAnimationFrame(i), d.update(), l.render(E, s);
+        }
+        let s,
+          E,
+          l,
+          d,
+          c,
+          m,
+          h,
+          w,
+          u,
+          p = [];
+        const R = 700,
+          H = 50,
+          g = (function () {
+            const e = new THREE.Vector3(),
+              t = new THREE.Euler(),
+              n = new THREE.Quaternion(),
+              r = new THREE.Vector3();
+            return function (a) {
+              (e.x = (2 * Math.random() - 1) * H),
+                (e.y = (2 * Math.random() - 1) * H),
+                (e.z = (2 * Math.random() - 1) * H),
+                (t.x = 0),
+                (t.z = 2 * Math.random() * Math.PI),
+                (t.y = 2 * Math.random() * Math.PI),
+                n.setFromEuler(t),
+                r.set(1, 1, 1),
+                a.compose(e, n, r);
+            };
+          })();
+        (u = new THREE.TextureLoader()).setCrossOrigin(""),
+          u.load(
+            "https://happy358.github.io/Images/HDR/kloofendal_48d_partly_cloudy_puresky_2k.jpg",
+            function (e) {
+              (e.colorSpace = THREE.SRGBColorSpace),
+                (e.minFilter = THREE.NearestFilter),
+                (e.generateMipmaps = !1),
+                (e.mapping = THREE.EquirectangularReflectionMapping),
+                (w = e),
+                a();
+            }
+          );
+      })();
+      document.getElementById("kadoIn").onclick = function () {
+        kadoIn.style = "transition:all .8s ease;transform:scale(10);opacity:0;";
+        document.getElementById("wallpaper").style = "transform: scale(1.5);";
+
+        if (sudahklik == true && fungsiAwal == 0) {
+          fungsiAwal = 1;
+          setTimeout(() => {
+            initengahan();
+            document.getElementById("bgKado").style = "display:none;";
+          }, 300);
+        } else {
+        }
+      };
+    </script>
+    <!-- Sampai Sini -->
+  </body>
+</html>
