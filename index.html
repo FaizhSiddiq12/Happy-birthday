@@ -497,22 +497,24 @@
       display: none !important;
     }
     #bgKado {
-      position: absolute;
-      z-index: 20;
-      width: 99%;
-      height: 99%;
-      top: 50%;
-      left: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transform: translate(-50%, -50%);
-      background: argba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
+  position: absolute;
+  z-index: 20;
+  width: auto;
+  max-width: 100vw;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+    
     #kadoIn {
       cursor: pointer;
       width: clap (120px, 40vw, 200px);
